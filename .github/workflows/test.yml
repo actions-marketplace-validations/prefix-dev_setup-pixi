@@ -14,7 +14,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
       - name: Move pixi.toml
         run: mv test/default/* .
       - uses: ./
@@ -42,7 +42,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
       - name: Move pixi.toml
         run: mv test/default/* .
       - uses: ./
@@ -58,7 +58,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
       - name: Move pixi.toml
         run: mv test/default/* .
       - uses: ./
@@ -69,7 +69,7 @@ jobs:
   custom-pixi-url:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
       - name: Move pixi.toml
         run: mv test/default/* .
       - uses: ./
@@ -83,7 +83,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
       - uses: ./
         with:
           manifest-path: test/default/pixi.toml
@@ -94,7 +94,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
       - name: Move pixi.toml
         run: mv test/default/* .
       - uses: ./
@@ -107,7 +107,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4.1.7
     - name: Move pixi.toml
       run: mv test/default/* .
     - uses: ./
@@ -126,7 +126,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
       - name: Move pixi.toml
         run: mv test/default/* .
       - uses: ./
@@ -147,7 +147,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
       - name: Move pixi.toml
         run: mv test/default/* .
       - uses: ./
@@ -170,7 +170,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
       - name: Move pixi.toml
         run: mv test/default/* .
       - uses: ./
@@ -192,7 +192,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
       - name: Move pixi.toml
         run: mv test/default/* .
       - uses: ./
@@ -211,7 +211,7 @@ jobs:
       matrix:
         post-cleanup: ['true', 'false']
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
       - name: Move pixi.toml
         run: mv test/default/* .
       - uses: lisanna-dettwyler/action-post-run@d053b9b43d788b87a409f6cdb3b6fc87c6c8a4fe
@@ -235,7 +235,7 @@ jobs:
       matrix:
         post-cleanup: ['true', 'false']
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
       - name: Move pixi.toml
         run: mv test/default/* .
       - uses: lisanna-dettwyler/action-post-run@d053b9b43d788b87a409f6cdb3b6fc87c6c8a4fe
@@ -256,7 +256,7 @@ jobs:
       matrix:
         post-cleanup: ['true', 'false']
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
       - name: Move pixi.toml
         run: mv test/default/* .
       - uses: lisanna-dettwyler/action-post-run@d053b9b43d788b87a409f6cdb3b6fc87c6c8a4fe
@@ -276,7 +276,7 @@ jobs:
       matrix:
         post-cleanup: ['true', 'false']
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
       - name: Move pixi.toml
         run: mv test/default/* .
       - uses: lisanna-dettwyler/action-post-run@d053b9b43d788b87a409f6cdb3b6fc87c6c8a4fe
@@ -296,7 +296,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
       - name: Move pixi.toml
         run: mv test/no-lockfile/* .
       - uses: ./
@@ -327,7 +327,7 @@ jobs:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
       - name: Move pixi files
         run: mv test/default/* .
       - uses: ./
@@ -352,7 +352,7 @@ jobs:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
       - name: Move pixi files
         run: mv test/default/* .
       - uses: ./
@@ -376,7 +376,7 @@ jobs:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
       - name: Move pixi files
         run: mv test/default/* .
       - uses: ./
@@ -396,7 +396,7 @@ jobs:
   #     matrix:
   #       os: [windows-latest, ubuntu-latest, macos-latest]
   #   steps:
-  #     - uses: actions/checkout@v4
+  #     - uses: actions/checkout@v4.1.7
   #     - name: Move pixi files
   #       run: mv test/no-lockfile/* .
   #     - uses: ./
