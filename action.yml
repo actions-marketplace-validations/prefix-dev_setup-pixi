@@ -9,7 +9,9 @@ inputs:
   pixi-version:
     description: Version of pixi to install
   pixi-url:
-    description: URL of pixi to install
+    description: URL of pixi to install. Can be a Handlebars template receiving `version`, `latest`, and `pixiFile` as variables.
+  pixi-url-headers:
+    description: Headers to use when fetching the pixi binary from `pixi-url`. Should be a JSON string.
   log-level:
     description: |
       Log level for the pixi CLI.
@@ -17,16 +19,39 @@ inputs:
   manifest-path:
     description: Path to the manifest file (i.e., `pixi.toml`) to use for the pixi CLI. Defaults to `pixi.toml`.
   run-install:
-    description: Whether to run `pixi install` after setting up the environment. Defaults to `true`.
+    description: Whether to run `pixi install` after installing pixi. Defaults to `true`.
+  environments:
+    description: |
+      A space-separated list of environments to install. If not specified, only the default environment is installed.
+  global-environments:
+    description: |
+      A newline-separated list of packages to install globally with `pixi global install`.
+  activate-environment:
+    description: |
+      If the installed environment should be "activated" for the current job, modifying `$GITHUB_ENV` and
+      `$GITHUB_PATH`. If more than one environment is specified in `environments`, this must be the name of the
+      environment. Defaults to `false`. Requires at least pixi v0.21.0.
+  locked:
+    description: Whether to use `pixi install --locked`. Defaults to `true` when the lockfile is present, otherwise `false`.
+  frozen:
+    description: Whether to use `pixi install --frozen`. Defaults to `false`.
   cache:
     description: Whether to cache the pixi environment. Defaults to `true`. Only works if `pixi.lock` is present.
+  global-cache:
+    description: |
+      Whether to cache the global environment(s). Defaults to `false`. As there is no lockfile for global environment,
+      the global cache will expire at the end of every month, to ensure it does not go stale.
   cache-key:
     description: |
       Cache key prefix to use for caching the pixi environment.
       Defaults to `pixi-`. The full cache key is `<cache-key><conda-arch>-<sha-256-of-pixi-lock>`.
+  global-cache-key:
+    description: |
+      Cache key prefix to use for caching the global environments.
+      Defaults to `pixi-global-`. The full cache key is `<global-cache-key><conda-arch>-<sha-256-of-global-environments>`.
   cache-write:
     description: |
-      Whether to write to the cache or only read from it. Defaults to `true`.
+      Whether to write to the cache or only read from it. Defaults to `true`. Applies to both project and global caches as the case may be.
   pixi-bin-path:
     description: |
       Path to the pixi binary to use. Defaults to `~/.pixi/bin/pixi`.
@@ -43,12 +68,22 @@ inputs:
     description: Password to use for authentication.
   auth-conda-token:
     description: Conda token to use for authentication.
+  auth-s3-access-key-id:
+    description: Access key ID to use for S3 authentication.
+  auth-s3-secret-access-key:
+    description: Secret access key to use for S3 authentication.
+  auth-s3-session-token:
+    description: Session token to use for S3 authentication.
+  pypi-keyring-provider:
+    description: |
+      Specifies whether to use keyring to look up credentials for PyPI.
+      options: disabled, subprocess
   post-cleanup:
     description: |
       If the action should clean up after itself. Defaults to `true`.
       If `true`, the pixi environment, the pixi binary and the rattler files in ~/.rattler and ~/.cache/rattler are removed.
 
 runs:
-  using: node20
+  using: node24
   main: dist/index.js
   post: dist/post.js

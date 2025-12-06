@@ -1,9 +1,18 @@
 import type { BinaryLike } from 'crypto'
 import { createHash } from 'crypto'
-import * as os from 'os'
+import os from 'os'
 import * as core from '@actions/core'
-import { exec } from '@actions/exec'
+import type { ExecOptions } from '@actions/exec'
+import { exec, getExecOutput } from '@actions/exec'
 import { options } from './options'
+import Handlebars from 'handlebars'
+
+export const DEFAULT_PIXI_URL_TEMPLATE = `\
+{{#if latest~}}
+https://github.com/prefix-dev/pixi/releases/latest/download/{{pixiFile}}
+{{~else~}}
+https://github.com/prefix-dev/pixi/releases/download/{{version}}/{{pixiFile}}
+{{~/if}}`
 
 export const getCondaArch = () => {
   const archDict: Record<string, string> = {
@@ -12,7 +21,8 @@ export const getCondaArch = () => {
     'linux-x64': 'linux-64',
     'linux-arm64': 'linux-aarch64',
     'linux-ppc64': 'linux-ppc64le',
-    'win32-x64': 'win-64'
+    'win32-x64': 'win-64',
+    'win32-arm64': 'win-arm64'
   }
   const arch = archDict[`${os.platform()}-${os.arch()}`]
   if (!arch) {
@@ -47,17 +57,17 @@ const getArch = () => {
   }
 }
 
-export const getPixiUrlFromVersion = (version: string) => {
+export const renderPixiUrl = (urlTemplate: string, version: string) => {
+  const latest = version == 'latest'
   const arch = getArch()
   const platform = getPlatform()
   const pixiFile = `pixi-${arch}-${platform}${platform === 'pc-windows-msvc' ? '.exe' : ''}`
-  if (arch === 'aarch64' && platform === 'pc-windows-msvc') {
-    throw new Error('Windows on ARM is currently not supported')
-  }
-  if (version === 'latest') {
-    return `https://github.com/prefix-dev/pixi/releases/latest/download/${pixiFile}`
-  }
-  return `https://github.com/prefix-dev/pixi/releases/download/${version}/${pixiFile}`
+  const template = Handlebars.compile(urlTemplate)
+  return template({
+    version,
+    latest,
+    pixiFile
+  })
 }
 
 export const sha256 = (s: BinaryLike) => {
@@ -69,15 +79,25 @@ export const sha256Short = (s: BinaryLike) => {
 }
 
 export const execute = (cmd: string[]) => {
-  core.debug(`Executing: ${cmd.join(' ')}`)
-  return exec(cmd[0], cmd.slice(1))
+  core.debug(`Executing: \`${cmd.toString()}\``)
+  // needs escaping if cmd[0] contains spaces
+  // https://github.com/prefix-dev/setup-pixi/issues/184#issuecomment-2765724843
+  return exec(`"${cmd[0]}"`, cmd.slice(1))
+}
+
+export const executeGetOutput = (cmd: string[], options?: ExecOptions) => {
+  core.debug(`Executing: \`${cmd.toString()}\``)
+  // needs escaping if cmd[0] contains spaces
+  // https://github.com/prefix-dev/setup-pixi/issues/184#issuecomment-2765724843
+  return getExecOutput(`"${cmd[0]}"`, cmd.slice(1), options)
 }
 
 export const pixiCmd = (command: string, withManifestPath = true) => {
-  let commandArray = [options.pixiBinPath].concat(command.split(' '))
+  let commandArray = [options.pixiBinPath].concat(command.split(' ').filter((x) => x !== ''))
   if (withManifestPath) {
     commandArray = commandArray.concat(['--manifest-path', options.manifestPath])
   }
+  commandArray = commandArray.concat(['--color', 'always'])
   switch (options.logLevel) {
     case 'vvv':
       commandArray = commandArray.concat(['-vvv'])

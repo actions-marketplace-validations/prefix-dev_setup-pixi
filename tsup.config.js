@@ -8,9 +8,15 @@ export default defineConfig({
   dts: false,
   clean: true,
   target: 'es2020',
-  format: ['cjs'],
-  sourcemap: true,
+  format: 'cjs',
+  sourcemap: false,
+  platform: 'node',
   minify: false,
+  outExtension() {
+    return {
+      js: '.js'
+    }
+  },
   // need to bundle dependencies because they aren't available otherwise when run inside the action
   noExternal: [
     '@actions/core',
@@ -18,7 +24,10 @@ export default defineConfig({
     '@actions/cache',
     '@actions/io',
     '@actions/tool-cache',
+    'handlebars',
     'untildify',
+    'smol-toml',
+    'which',
     'zod'
   ]
 })

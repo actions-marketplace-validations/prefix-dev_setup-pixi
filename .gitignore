@@ -97,3 +97,9 @@ Thumbs.db
 # Ignore built ts files
 __tests__/runner/*
 lib/**/*
+
+# Ignore jetbrains files
+.idea
+
+# ESBuild metafile
+metafile*.json
